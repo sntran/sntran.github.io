@@ -1,4 +1,8 @@
 {
+  "imports": {
+    "html-rewriter-wasm": "npm:html-rewriter-wasm^0.4.1",
+    "urlpattern-polyfill": "npm:urlpattern-polyfill^10.0.0"
+  },
   "tasks": {
     "start": "deno run -A --unstable-hmr main.js"
   }
