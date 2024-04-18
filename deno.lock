@@ -2,7 +2,9 @@
   "version": "3",
   "packages": {
     "specifiers": {
-      "npm:@worker-tools/html-rewriter": "npm:@worker-tools/html-rewriter@0.1.0-pre.17"
+      "npm:@worker-tools/html-rewriter": "npm:@worker-tools/html-rewriter@0.1.0-pre.17",
+      "npm:html-rewriter-wasm@^0.4.1": "npm:html-rewriter-wasm@0.4.1",
+      "npm:urlpattern-polyfill@^10.0.0": "npm:urlpattern-polyfill@10.0.0"
     },
     "npm": {
       "@stardazed/streams-compression@1.0.0": {
@@ -25,8 +27,24 @@
       "@worker-tools/resolvable-promise@0.2.0-pre.6": {
         "integrity": "sha512-+5RcuruCLB/P3FYYb376RgyImXaq9BBQoOskUbgPyNK3O0AXPakrXUj1EELv+lcnUSdFws/ufdrrWODLJyoTmg==",
         "dependencies": {}
+      },
+      "html-rewriter-wasm@0.4.1": {
+        "integrity": "sha512-lNovG8CMCCmcVB1Q7xggMSf7tqPCijZXaH4gL6iE8BFghdQCbaY5Met9i1x2Ex8m/cZHDUtXK9H6/znKamRP8Q==",
+        "dependencies": {}
+      },
+      "urlpattern-polyfill@10.0.0": {
+        "integrity": "sha512-H/A06tKD7sS1O1X2SshBVeA5FLycRpjqiBeqGKmBwBDBy28EnRjORxTNe269KSSr5un5qyWi1iL61wLxpd+ZOg==",
+        "dependencies": {}
       }
     }
   },
-  "remote": {}
+  "remote": {},
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:html-rewriter-wasm@^0.4.1",
+        "npm:urlpattern-polyfill@^10.0.0"
+      ]
+    }
+  }
 }
