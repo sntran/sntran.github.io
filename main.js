@@ -6,15 +6,16 @@ if (!("HTMLRewriter" in globalThis)) {
 }
 
 function home(request) {
-  const { pathname } = new URL(request.url);
-
   const rewriter = new HTMLRewriter();
   rewriter.on("feed", {
     // Prepends processing instruction to load associated XSLT stylesheet.
     element(element) {
       const options = { html: true };
-      element.before(`<?xslt-param name="html" value="/index.html"?>`, options)
-      element.before(`<?xml-stylesheet type="text/xsl" href="/index.xsl" ?>`, options);
+      element.before(`<?xslt-param name="html" value="/index.html"?>`, options);
+      element.before(
+        `<?xml-stylesheet type="text/xsl" href="/index.xsl" ?>`,
+        options,
+      );
     },
   });
 
@@ -24,7 +25,8 @@ function home(request) {
 function feed(request) {
   const { origin = "https://sntran.com" } = new URL(request.url);
 
-  return new Response(`<?xml version="1.0" encoding="UTF-8" ?>
+  return new Response(
+    `<?xml version="1.0" encoding="UTF-8" ?>
   <feed xmlns="http://www.w3.org/2005/Atom">
     <id>${origin}</id>
     <title>Trần Nguyễn Sơn's Space</title>
@@ -95,11 +97,13 @@ function feed(request) {
         </div>
       </content>
     </entry>
-  </feed>`, {
-    headers: {
-      "Content-Type": "application/xml",
+  </feed>`,
+    {
+      headers: {
+        "Content-Type": "application/xml",
+      },
     },
-  });
+  );
 }
 
 const routes = {
@@ -107,14 +111,14 @@ const routes = {
   "GET@/atom.xml": feed,
   "GET@/codicon.svg": () => {
     return fetch("https://unpkg.com/@vscode/codicons/dist/codicon.svg");
-  }
-}
+  },
+};
 
 const route = router(routes);
 
 export default {
   fetch: route,
-}
+};
 
 // Learn more at https://deno.land/manual/examples/module_metadata#concepts
 if (import.meta.main) {
@@ -127,7 +131,7 @@ if (import.meta.main) {
       const url = new URL(`./static${pathname}`, import.meta.url);
       return fetch(url);
     },
-  }
+  };
 
   Deno.serve((request) => {
     return route(request, env);
