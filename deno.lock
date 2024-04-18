@@ -1,0 +1,32 @@
+{
+  "version": "3",
+  "packages": {
+    "specifiers": {
+      "npm:@worker-tools/html-rewriter": "npm:@worker-tools/html-rewriter@0.1.0-pre.17"
+    },
+    "npm": {
+      "@stardazed/streams-compression@1.0.0": {
+        "integrity": "sha512-SQCiwxdIVJ5xxUBYptN+fc+tJpSDbxQuJ0+3u2SmHjIzr6JIRZ28AVFtFnGy6x6j3UBlaLx73w9rC6UAFxnd1g==",
+        "dependencies": {
+          "@stardazed/zlib": "@stardazed/zlib@1.0.1"
+        }
+      },
+      "@stardazed/zlib@1.0.1": {
+        "integrity": "sha512-MS6PCYiRNJ32c69+3NPyL+bu7LpiFDvMcBXnlhQnF8CKMG0R/xRVCCo422NPkQ0+Cox3xKpk5Lc1LfWFS4b3cw==",
+        "dependencies": {}
+      },
+      "@worker-tools/html-rewriter@0.1.0-pre.17": {
+        "integrity": "sha512-R/kjKBJtTeicFvVKdQ3J9KIirCnJcfawtaa5FG/F+ZwU6X2AmrbF+n4axxjcnxKsGjITd8OC7QhBmAkKsHJu2Q==",
+        "dependencies": {
+          "@stardazed/streams-compression": "@stardazed/streams-compression@1.0.0",
+          "@worker-tools/resolvable-promise": "@worker-tools/resolvable-promise@0.2.0-pre.6"
+        }
+      },
+      "@worker-tools/resolvable-promise@0.2.0-pre.6": {
+        "integrity": "sha512-+5RcuruCLB/P3FYYb376RgyImXaq9BBQoOskUbgPyNK3O0AXPakrXUj1EELv+lcnUSdFws/ufdrrWODLJyoTmg==",
+        "dependencies": {}
+      }
+    }
+  },
+  "remote": {}
+}
