@@ -107,6 +107,11 @@ const routes = {
   "GET@/": home,
   "GET@/favicon.ico": () => new Response(),
   "GET@/atom.xml": feed,
+  "GET@/index.(xsl|html)": (request, env) => {
+    const url = new URL(request.url);
+    url.pathname = `/static${url.pathname}`;
+    return env.ASSETS.fetch(new Request(url));
+  },
   "GET@/codicon.svg": () => {
     return fetch("https://unpkg.com/@vscode/codicons/dist/codicon.svg");
   },

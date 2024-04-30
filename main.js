@@ -30,7 +30,7 @@ async function assets(request) {
   request = new Request(request);
   const { pathname } = new URL(request.url);
   try {
-    const body = await readFile(new URL(`./static${pathname}`, import.meta.url));
+    const body = await readFile(new URL(`.${pathname}`, import.meta.url));
     const headers = new Headers();
     return new Response(body, {
       headers,
@@ -67,7 +67,7 @@ const server = createServer(async (incoming, outgoing) => {
   outgoing.end();
 });
 
-const port = Number(env.PORT) || 8787;
+const port = Number(env.PORT) || 8788;
 server.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
 });
