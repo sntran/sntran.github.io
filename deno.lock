@@ -2,32 +2,19 @@
   "version": "3",
   "packages": {
     "specifiers": {
-      "npm:@worker-tools/html-rewriter": "npm:@worker-tools/html-rewriter@0.1.0-pre.17",
-      "npm:html-rewriter-wasm@^0.4.1": "npm:html-rewriter-wasm@0.4.1",
+      "jsr:@sntran/html-rewriter@^0.1.1": "jsr:@sntran/html-rewriter@0.1.1",
+      "npm:html-rewriter-wasm@0.4.1": "npm:html-rewriter-wasm@0.4.1",
       "npm:urlpattern-polyfill@^10.0.0": "npm:urlpattern-polyfill@10.0.0"
     },
+    "jsr": {
+      "@sntran/html-rewriter@0.1.1": {
+        "integrity": "6dc0bc57591e92e77f339fc6027a6a73d0a45a6a50eb5cf70bb0a844a234c0e7",
+        "dependencies": [
+          "npm:html-rewriter-wasm@0.4.1"
+        ]
+      }
+    },
     "npm": {
-      "@stardazed/streams-compression@1.0.0": {
-        "integrity": "sha512-SQCiwxdIVJ5xxUBYptN+fc+tJpSDbxQuJ0+3u2SmHjIzr6JIRZ28AVFtFnGy6x6j3UBlaLx73w9rC6UAFxnd1g==",
-        "dependencies": {
-          "@stardazed/zlib": "@stardazed/zlib@1.0.1"
-        }
-      },
-      "@stardazed/zlib@1.0.1": {
-        "integrity": "sha512-MS6PCYiRNJ32c69+3NPyL+bu7LpiFDvMcBXnlhQnF8CKMG0R/xRVCCo422NPkQ0+Cox3xKpk5Lc1LfWFS4b3cw==",
-        "dependencies": {}
-      },
-      "@worker-tools/html-rewriter@0.1.0-pre.17": {
-        "integrity": "sha512-R/kjKBJtTeicFvVKdQ3J9KIirCnJcfawtaa5FG/F+ZwU6X2AmrbF+n4axxjcnxKsGjITd8OC7QhBmAkKsHJu2Q==",
-        "dependencies": {
-          "@stardazed/streams-compression": "@stardazed/streams-compression@1.0.0",
-          "@worker-tools/resolvable-promise": "@worker-tools/resolvable-promise@0.2.0-pre.6"
-        }
-      },
-      "@worker-tools/resolvable-promise@0.2.0-pre.6": {
-        "integrity": "sha512-+5RcuruCLB/P3FYYb376RgyImXaq9BBQoOskUbgPyNK3O0AXPakrXUj1EELv+lcnUSdFws/ufdrrWODLJyoTmg==",
-        "dependencies": {}
-      },
       "html-rewriter-wasm@0.4.1": {
         "integrity": "sha512-lNovG8CMCCmcVB1Q7xggMSf7tqPCijZXaH4gL6iE8BFghdQCbaY5Met9i1x2Ex8m/cZHDUtXK9H6/znKamRP8Q==",
         "dependencies": {}
@@ -41,12 +28,12 @@
   "remote": {},
   "workspace": {
     "dependencies": [
-      "npm:html-rewriter-wasm@^0.4.1",
+      "jsr:@sntran/html-rewriter@^0.1.1",
       "npm:urlpattern-polyfill@^10.0.0"
     ],
     "packageJson": {
       "dependencies": [
-        "npm:html-rewriter-wasm@^0.4.1",
+        "npm:@jsr/sntran__html-rewriter@^0.1.1",
         "npm:urlpattern-polyfill@^10.0.0"
       ]
     }
