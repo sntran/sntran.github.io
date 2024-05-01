@@ -198,13 +198,13 @@ function atom(request) {
 }
 
 const routes = {
-  "GET@/": page,
-  "GET@/:path*{/}?": page,
   "GET@/favicon.ico": () => new Response(),
   "GET@/feed.xml": atom,
   "GET@/codicon.svg": () => {
     return fetch("https://unpkg.com/@vscode/codicons/dist/codicon.svg");
   },
+  "GET@/": page,
+  "GET@/:path*{/}?": page,
 };
 
 export default {
