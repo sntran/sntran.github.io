@@ -1,7 +1,5 @@
-import * as markdown from "markdown-wasm";
+import { marked } from "marked";
 import { router } from "./lib/router.js";
-
-await markdown.ready;
 
 async function page(request, env) {
   const url = new URL(request.url);
@@ -81,7 +79,56 @@ async function page(request, env) {
   }
 
   const contentOptions = { html: true };
-  const rewriter = new HTMLRewriter();
+  let rewriter = new HTMLRewriter();
+
+  // First pass to replace includes and content.
+  rewriter.onDocument({
+    async text(chunk) {
+      let text = chunk.text;
+
+      if (text.includes("{% include ")) {
+        const includes = text.matchAll(/{% include (.+) %}/g);
+        for (const include of includes) {
+          const file = new URL(`/_includes/${include[1]}`, url);
+          const response = await env.ASSETS.fetch(file);
+          text = text.replace(include[0], await response.text());
+        }
+        chunk.replace(text, contentOptions);
+      }
+
+      // Injects the content of the requested file.
+      if (text.includes("{{ content }}")) {
+        let content = "";
+        if (page) {
+          const file = new URL(pathname, url);
+          if (pathname.endsWith("/")) {
+            file.pathname += "README.md";
+          }
+          const response = await env.ASSETS.fetch(file);
+          content = marked.parse(await response.text());
+        }
+
+        text = text.replace("{{ content }}", content);
+        chunk.replace(text, contentOptions);
+      }
+    }
+  });
+
+  response = rewriter.transform(response);
+
+  // Second pass to map data
+  rewriter = new HTMLRewriter();
+
+  // Interpolates template variables
+  rewriter.onDocument({
+    text(chunk) {
+      let text = chunk.text;
+      if (text.includes("{{ page.title }}")) {
+        text = text.replaceAll("{{ page.title }}", page?.title || "");
+        chunk.replace(text, contentOptions);;
+      }
+    }
+  });
 
   rewriter.on(`nav[role="navigation"][aria-label="Primary"] > ul`, {
     // Adds feed entries to the navigation menu.
@@ -110,32 +157,8 @@ async function page(request, env) {
     },
   });
 
-  rewriter.onDocument({
-    async text(chunk) {
-      let text = chunk.text;
-      if (text.includes("{{ page.title }}")) {
-        text = text.replace("{{ page.title }}", page?.title || "");
-        chunk.replace(text, contentOptions);;
-      }
-      // Injects the content of the requested file.
-      if (text.includes("{{ content }}")) {
-        let content = "";
-        if (page) {
-          const file = new URL(pathname, url);
-          if (pathname.endsWith("/")) {
-            file.pathname += "README.md";
-          }
-          const response = await env.ASSETS.fetch(file);
-          content = markdown.parse(await response.text());
-        }
-
-        text = text.replace("{{ content }}", content);
-        chunk.replace(text, contentOptions);
-      }
-    }
-  });
-
   response = rewriter.transform(response);
+
   return response;
 }
 

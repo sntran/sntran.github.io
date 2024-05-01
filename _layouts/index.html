@@ -6,72 +6,8 @@
   <meta name="color-scheme" content="dark light" />
   <link href="atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide Atom feed" />
   <title>{{ page.title }}</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style type="text/tailwindcss">
-    :root {
-      --color-border: #2b2b2b;
-      --color-blue: #0078d4;
-    }
-
-    @layer base {
-      h1 {
-        @apply text-5xl;
-      }
-
-      :where(.content) h1 {
-        @apply font-bold;
-        @apply text-3xl;
-        @apply mb-4 pb-2;
-        @apply border-b-2 border-b-[--color-border];
-      }
-
-      h2 {
-        @apply mb-1;
-        @apply text-2xl;
-      }
-
-      :where(.content) h2 {
-        @apply font-bold;
-        @apply my-4 pb-2;
-        @apply border-b-2 border-b-[--color-border];
-      }
-
-      h3 {
-        @apply text-xl;
-      }
-
-      :where(.content) h3 {
-        @apply font-bold;
-        @apply my-2;
-      }
-
-      .subtitle {
-        @apply text-3xl;
-      }
-
-      ul, ol {
-        @apply pl-4;
-      }
-
-      :where(.content) ul, :where(.content) ol {
-        @apply my-4;
-      }
-
-      :where(.content) ul {
-        @apply list-disc;
-      }
-
-      :where(.content) ol {
-        @apply list-decimal;
-      }
-    }
-
-    @layer utilities {
-      .bg-canvas {
-        background-color: Canvas;
-      }
-    }
-  </style>
+  <script src="https://cdn.tailwindcss.com/3.4.3"></script>
+  <style type="text/tailwindcss">{% include styles.css %}</style>
 </head>
 
 <body
@@ -89,106 +25,9 @@
       md:w-[300px]
     "
   >
-    <!--#region Activity bar -->
-    <ul
-      id="activitybar"
-      role="tablist" aria-label="Active View Switcher"
-      class="
-        flex flex-col
-        border-r border-r-[--color-border]
-      "
-    >
-      <li>
-        <button
-          popovertarget="explorer"
-          class="p-3"
-        >
-          <svg width="24" height="24">
-            <title>Explorer</title>
-            <use href="/codicon.svg#files" />
-          </svg>
-        </button>
-      </li>
-      <li>
-        <button
-          popovertarget="explorer"
-          class="p-3"
-        >
-          <svg width="24" height="24">
-            <title>Search</title>
-            <use href="/codicon.svg#search" />
-          </svg>
-        </button>
-      </li>
+    {% include activitybar.html %}
 
-      <li class="mt-auto">
-        <button
-          popovertarget="account"
-          class="p-3"
-        >
-          <svg width="24" height="24">
-            <title>Account</title>
-            <use href="/codicon.svg#account" />
-          </svg>
-        </button>
-      </li>
-      <li>
-        <button
-          popovertarget="settings"
-          class="p-3"
-        >
-          <svg width="24" height="24">
-            <title>Settings</title>
-            <use href="/codicon.svg#settings-gear" />
-          </svg>
-        </button>
-      </li>
-    </ul>
-    <!--#endregion-->
-
-    <!--#region Explorer -->
-    <nav
-      id="explorer" popover=""
-      role="navigation" aria-label="Primary"
-      class="
-        flex-1
-        w-auto h-auto
-        bottom-6
-        my-0 ml-12
-        px-4
-
-        md:block md:relative md:mx-0
-        md:[&:popover-open]:block
-      "
-    >
-      <div class="py-1 uppercase">Explorer</div>
-
-      <ul class="p-0">
-        {% for doc in site.pages %}
-
-        {% endfor %}
-        <li>
-          <a href="{{ href }}">{{ title }}</a>
-        </li>
-        <li>
-          <details open="">
-            <summary>{{ title }}</summary>
-            <ul>
-              <li>
-                <a href="{{ href }}">{{ title }}</a>
-              </li>
-              <li>
-                <a href="/Projects/2">Project 2</a>
-              </li>
-              <li>
-                <a href="/Projects/3">Project 3</a>
-              </li>
-            </ul>
-          </details>
-        </li>
-      </ul>
-    </nav>
-    <!--#endregion-->
+    {% include explorer.html %}
   </header>
 
   <main
@@ -198,120 +37,13 @@
       grid grid-rows-[auto_auto_1fr]
     "
   >
-    <!--#region Breadcrumbs -->
-    <nav
-      role="navigation" aria-label="Breadcrumbs"
-      class="
-        sticky top-[35px] z-10
-        px-4 text-sm
-        bg-canvas
-      "
-    >
-      <ul class="p-0">
-        <li>Welcome</li>
-      </ul>
-    </nav>
-    <!--#endregion-->
 
-    <!--#region Tabs -->
-    <ul
-      id="tabs"
-      class="
-        sticky top-0 z-10
-        -order-1
-        flex
-        p-0
-        bg-canvas
-        border-b border-b-[--color-border]
-      "
-    >
-      <li>
-        <a
-          href="/"
-          class="
-            inline-block px-4 py-1
-            italic
-            border-r-1 border-b-[--color-border]
-            border-t-2 border-t-transparent
-            [&[aria-current]]:border-t-[LinkText]
-          "
-        >Welcome</a>
-      </li>
-      <li>
-        <a
-          href="{{ page.href }}"
-          class="
-            inline-block px-4 py-1
-            italic
-            border-r-1 border-b-[--color-border]
-            border-t-2 border-t-transparent
-            [&[aria-current]]:border-t-[LinkText]
-          "
-        >{{ page.title }}</a>
-      </li>
-    </ul>
-    <!--#endregion-->
+    {% include breadcrumbs.html %}
+
+    {% include tabs.html %}
 
     <!--#region Preview -->
-    <article
-      id="welcome"
-      class="
-        row-start-3 col-start-1
-        grid gap-x-32 gap-y-8 place-content-center justify-center
-        p-4
-        bg-canvas
-        border-t border-t-[--color-border]
-
-        content
-      "
-    >
-      <header class="md:col-span-2">
-        <h1 class="text-5xl m-0 p-0 border-b-0">Trần Nguyễn Sơn</h1>
-        <p class="subtitle">Husband, Dad, Code Hobbyist</p>
-      </header>
-
-      <div>
-        <h2 class="m-0 p-0 border-b-0">Start</h2>
-        <ul class="flex flex-col gap-1 p-0 list-none">
-          <li>
-            <a href="/README.md" class="text-[--color-blue]">About Me</a>
-          </li>
-          <li>
-            <a href="/Projects/README.md" class="text-[--color-blue]">Projects I'm Involved In</a>
-          </li>
-          <li>
-            <a href="/Contact.md" class="text-[--color-blue]">Get in Touch</a>
-          </li>
-        </ul>
-
-        <h2 class="m-0 mt-4 p-0 border-b-0">Recent</h2>
-        <p>You have not viewed anything recently.</p>
-      </div>
-
-      <div>
-        <h2 class="m-0 p-0 border-b-0">Journal Entries</h2>
-
-        <ul class="flex flex-col gap-4 text-lg m-0 p-0 list-none">
-          <li>
-            <a href="/Blog/1" class="block px-2 py-1 rounded border border-[--color-border]">
-              <span class="">Start Documenting My Life</span>
-              <span class="block text-base">With a new website built from scratch</span>
-            </a>
-          </li>
-          <li>
-            <a href="/Blog/1" class="block px-2 py-1 rounded border border-[--color-border]">
-              <span>TBA</span>
-            </a>
-          </li>
-          <li>
-            <a href="/Blog/1" class="block px-2 py-1 rounded border border-[--color-border]">
-              <span>TBA</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-    </article>
+    {% include welcome.html %}
 
     <article
       class="
@@ -339,21 +71,7 @@
       border border-[--color-border]
     "
   >
-    <button class="p-1 bg-[--color-blue] text-white">
-      <svg width="14" height="14">
-        <title>Menu</title>
-        <use href="/codicon.svg#menu" />
-      </svg>
-    </button>
-
-    <button class="px-1 ms-auto text-sm">Language: EN</button>
-
-    <button class="p-1">
-      <svg width="14" height="14">
-        <title>Notifications</title>
-        <use href="/codicon.svg#bell" />
-      </svg>
-    </button>
+    {% include statusbar.html %}
   </footer>
 
 </body>

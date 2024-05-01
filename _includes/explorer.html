@@ -1,0 +1,41 @@
+<nav
+  id="explorer" popover=""
+  role="navigation" aria-label="Primary"
+  class="
+    flex-1
+    w-auto h-auto
+    bottom-6
+    my-0 ml-12
+    px-4
+
+    md:block md:relative md:mx-0
+    md:[&:popover-open]:block
+  "
+>
+  <div class="py-1 uppercase">Explorer</div>
+
+  <ul class="p-0">
+    {% for doc in site.pages %}
+
+    {% endfor %}
+    <li>
+      <a href="{{ href }}">{{ title }}</a>
+    </li>
+    <li>
+      <details open="">
+        <summary>{{ title }}</summary>
+        <ul>
+          <li>
+            <a href="{{ href }}">{{ title }}</a>
+          </li>
+          <li>
+            <a href="/Projects/2">Project 2</a>
+          </li>
+          <li>
+            <a href="/Projects/3">Project 3</a>
+          </li>
+        </ul>
+      </details>
+    </li>
+  </ul>
+</nav>

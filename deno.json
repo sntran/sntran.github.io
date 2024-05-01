@@ -1,7 +1,7 @@
 {
   "imports": {
     "html-rewriter-wasm": "npm:html-rewriter-wasm@^0.4.1",
-    "markdown-wasm": "npm:markdown-wasm@^1.2.0",
+    "marked": "npm:marked@^12.0.2",
     "urlpattern-polyfill": "npm:urlpattern-polyfill@^10.0.0"
   },
   "tasks": {

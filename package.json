@@ -9,11 +9,12 @@
     "workerd": "./_worker.js"
   },
   "scripts": {
-    "start": "node main.js"
+    "start": "node main.js",
+    "pages": "npx wrangler pages dev ."
   },
   "dependencies": {
     "html-rewriter-wasm": "^0.4.1",
-    "markdown-wasm": "^1.2.0",
+    "marked": "^12.0.2",
     "urlpattern-polyfill": "^10.0.0"
   }
 }
