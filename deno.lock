@@ -2,17 +2,8 @@
   "version": "3",
   "packages": {
     "specifiers": {
-      "jsr:@sntran/html-rewriter@^0.1.1": "jsr:@sntran/html-rewriter@0.1.1",
-      "npm:html-rewriter-wasm@0.4.1": "npm:html-rewriter-wasm@0.4.1",
+      "npm:html-rewriter-wasm@^0.4.1": "npm:html-rewriter-wasm@0.4.1",
       "npm:urlpattern-polyfill@^10.0.0": "npm:urlpattern-polyfill@10.0.0"
-    },
-    "jsr": {
-      "@sntran/html-rewriter@0.1.1": {
-        "integrity": "6dc0bc57591e92e77f339fc6027a6a73d0a45a6a50eb5cf70bb0a844a234c0e7",
-        "dependencies": [
-          "npm:html-rewriter-wasm@0.4.1"
-        ]
-      }
     },
     "npm": {
       "html-rewriter-wasm@0.4.1": {
@@ -33,7 +24,7 @@
     ],
     "packageJson": {
       "dependencies": [
-        "npm:@jsr/sntran__html-rewriter@^0.1.1",
+        "npm:html-rewriter-wasm@^0.4.1",
         "npm:urlpattern-polyfill@^10.0.0"
       ]
     }

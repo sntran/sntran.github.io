@@ -12,7 +12,7 @@
     "start": "node main.js"
   },
   "dependencies": {
-    "@sntran/html-rewriter": "npm:@jsr/sntran__html-rewriter@^0.1.1",
+    "html-rewriter-wasm": "^0.4.1",
     "urlpattern-polyfill": "^10.0.0"
   }
 }
