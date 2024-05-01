@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark light" />
   <link href="atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide Atom feed" />
-  <title>Trần Nguyễn Sơn</title>
+  <title>{{ page.title }}</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style type="text/tailwindcss">
     :root {
@@ -61,7 +61,7 @@
         >
           <svg width="24" height="24">
             <title>Explorer</title>
-            <use href="codicon.svg#files" />
+            <use href="/codicon.svg#files" />
           </svg>
         </button>
       </li>
@@ -72,7 +72,7 @@
         >
           <svg width="24" height="24">
             <title>Search</title>
-            <use href="codicon.svg#search" />
+            <use href="/codicon.svg#search" />
           </svg>
         </button>
       </li>
@@ -84,7 +84,7 @@
         >
           <svg width="24" height="24">
             <title>Account</title>
-            <use href="codicon.svg#account" />
+            <use href="/codicon.svg#account" />
           </svg>
         </button>
       </li>
@@ -95,7 +95,7 @@
         >
           <svg width="24" height="24">
             <title>Settings</title>
-            <use href="codicon.svg#settings-gear" />
+            <use href="/codicon.svg#settings-gear" />
           </svg>
         </button>
       </li>
@@ -114,15 +114,18 @@
       <div class="py-1 uppercase">Explorer</div>
 
       <ul>
+        {% for doc in site.pages %}
+
+        {% endfor %}
         <li>
-          <a href="{href}">{id}</a>
+          <a href="{{ href }}">{{ title }}</a>
         </li>
         <li>
           <details open="">
-            <summary>{title}</summary>
+            <summary>{{ title }}</summary>
             <ul>
               <li>
-                <a href="{href}">{title}</a>
+                <a href="{{ href }}">{{ title }}</a>
               </li>
               <li>
                 <a href="/Projects/2">Project 2</a>
@@ -160,7 +163,7 @@
             border-t-2 border-t-[LinkText]
             italic
           "
-        >Welcome</a>
+        >{{ page.title }}</a>
       </li>
     </ul>
     <!--#endregion-->
@@ -169,57 +172,11 @@
     <article
       class="
         flex-1
-        grid gap-x-32 gap-y-8
-        place-content-center justify-center
         p-2
         border-t border-t-[--color-border]
       "
     >
-      <header class="col-span-2">
-        <h1>Trần Nguyễn Sơn</h1>
-        <p class="subtitle">Husband, Dad, Code Hobbyist</p>
-      </header>
-
-      <section>
-        <h2>Start</h2>
-        <ul class="flex flex-col gap-1">
-          <li>
-            <a href="/README.md" class="text-[--color-blue]">About Me</a>
-          </li>
-          <li>
-            <a href="/Projects/README.md" class="text-[--color-blue]">Projects I'm Involved In</a>
-          </li>
-          <li>
-            <a href="/Contact.md" class="text-[--color-blue]">Get in Touch</a>
-          </li>
-        </ul>
-
-        <h2 class="mt-4">Recent</h2>
-        <p>You have not viewed anything recently.</p>
-      </section>
-
-      <section>
-        <h2>Journal Entries</h2>
-
-        <ul class="flex flex-col gap-4 text-lg">
-          <li>
-            <a href="/Blog/1" class="block px-2 py-1 rounded border border-[--color-border]">
-              <span class="">Start Documenting My Life</span>
-              <span class="block text-base">With a new website built from scratch</span>
-            </a>
-          </li>
-          <li>
-            <a href="/Blog/1" class="block px-2 py-1 rounded border border-[--color-border]">
-              <span>TBA</span>
-            </a>
-          </li>
-          <li>
-            <a href="/Blog/1" class="block px-2 py-1 rounded border border-[--color-border]">
-              <span>TBA</span>
-            </a>
-          </li>
-        </ul>
-      </section>
+      {{ content }}
     </article>
     <!--#endregion-->
 
@@ -238,7 +195,7 @@
     <button class="p-1 bg-[--color-blue] text-white">
       <svg width="14" height="14">
         <title>Menu</title>
-        <use href="codicon.svg#menu" />
+        <use href="/codicon.svg#menu" />
       </svg>
     </button>
 
@@ -247,7 +204,7 @@
     <button class="p-1">
       <svg width="14" height="14">
         <title>Notifications</title>
-        <use href="codicon.svg#bell" />
+        <use href="/codicon.svg#bell" />
       </svg>
     </button>
   </footer>

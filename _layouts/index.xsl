@@ -53,7 +53,10 @@
       <xsl:apply-templates select="@*"/>
 
       <xsl:for-each select="$ROOT/atom:entry">
-        <xsl:sort select="atom:id" order="ascending" data-type="text"></xsl:sort>
+        <xsl:sort
+          select="string-length(atom:id) - string-length(translate(atom:id, '/', ''))"
+          order="descending" data-type="number"
+        />
 
         <xsl:apply-templates select="$templates[count(.//ul) = 0][1]">
           <xsl:with-param name="node" select="." />
@@ -63,7 +66,7 @@
   </xsl:template>
 
   <!-- Interpolates attributes -->
-  <xsl:template match="@*[contains(., '{') and contains(., '}')]">
+  <xsl:template match="@*[contains(., '{{') and contains(., '}}')]">
     <xsl:param name="node"/>
 
     <xsl:variable name="name" select="name()"/>
@@ -87,11 +90,16 @@
     </xsl:choose>
   </xsl:template>
 
+  <!-- Special case for Welcome page -->
+  <xsl:template match="text()[contains(., '{{ content }}')]">
+    <xsl:copy-of select="document('/404.html')" />
+  </xsl:template>
+
   <!-- Interpolates text -->
   <xsl:template name="interpolate" match="text()">
     <xsl:param name="text" select="." />
-    <xsl:param name="prefix" select="'{'" />
-    <xsl:param name="suffix" select="'}'" />
+    <xsl:param name="prefix" select="'{{'" />
+    <xsl:param name="suffix" select="'}}'" />
     <xsl:param name="node" select="." />
 
     <xsl:choose>
@@ -132,7 +140,7 @@
   </xsl:template>
 
   <!-- Ignore curly braces inside inline scripts or styles. -->
-  <xsl:template match="*[name() = 'script' or name() = 'style']/text()[contains(., '{') and contains(., '}')]">
+  <xsl:template match="*[name() = 'script' or name() = 'style']/text()[contains(., '{{') and contains(., '}}')]">
     <xsl:value-of select="." disable-output-escaping="yes" />
   </xsl:template>
 
@@ -142,11 +150,18 @@
     <xsl:param name="expression" />
 
     <xsl:choose>
+      <xsl:when test="$expression = 'page.title'">
+        <xsl:value-of select="'Welcome'" />
+      </xsl:when>
+      <xsl:when test="$expression = 'content'">
+        <xsl:apply-templates select="$welcome" />
+        <!-- <xsl:copy-of select="$welcome/" /> -->
+      </xsl:when>
       <xsl:when test="$expression = 'href'">
         <xsl:value-of select="$context/*[@rel = 'self']/@href" />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="$context/*[name() = $expression]" />
+        <xsl:value-of select="$context/*[local-name() = $expression]" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

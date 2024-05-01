@@ -1,7 +1,13 @@
 import { router } from "./lib/router.js";
 
-async function home(request, env) {
+async function page(request, env) {
   const url = new URL(request.url);
+  let pathname = url.pathname; // The original pathname.
+  if (pathname === "/") {
+    pathname = "/404.html";
+  } else if (pathname.endsWith("/")) {
+    pathname += "README.md";
+  }
 
   let response = atom(new Request(url, {
     headers: {
@@ -10,12 +16,17 @@ async function home(request, env) {
   }), env);
   const feed = await response.json();
 
-  url.pathname = "/static/index.html";
+  url.pathname = "/_layouts/index.html";
   response = await env.ASSETS.fetch(url);
 
   const tree = {
     title: new URL(feed.href).hostname,
     href: feed.href,
+    children: [],
+  }
+
+  let page = {
+    title: "Welcome",
     children: [],
   }
 
@@ -32,6 +43,10 @@ async function home(request, env) {
     }
     linkMap[href] = link;
 
+    if (href === pathname.substring(1)) {
+      page = link;
+    }
+
     if (!parent) {
       tree.children.push(link);
     } else if (linkMap[parent + "/"]) {
@@ -43,7 +58,7 @@ async function home(request, env) {
     const children = link.children;
     if (!children.length) {
       return `<li>
-        <a href="${link.href}">
+        <a href="/${link.href}">
           ${link.title}
         </a>
       </li>`;
@@ -59,7 +74,7 @@ async function home(request, env) {
             .join("")
           }
           ${link.href.endsWith("/")
-            ? `<li><a href="${link.href}">README.md</a></li>`
+            ? `<li><a href="/${link.href}">README.md</a></li>`
             : ""
           }
         </ul>
@@ -77,6 +92,22 @@ async function home(request, env) {
     },
   });
 
+  rewriter.onDocument({
+    async text(chunk) {
+      let text = chunk.text;
+      if (text.includes("{{ page.title }}")) {
+        text = text.replace("{{ page.title }}", page.title);
+        chunk.replace(text, contentOptions);;
+      }
+      // Injects the content of the requested file.
+      if (text.includes("{{ content }}")) {
+        const response = await env.ASSETS.fetch(new URL(pathname, url));
+        text = text.replace("{{ content }}", await response.text());
+        chunk.replace(text, contentOptions);
+      }
+    }
+  });
+
   response = rewriter.transform(response);
   return response;
 }
@@ -85,11 +116,13 @@ function atom(request) {
   const { headers, url } = request;
   const { origin = "https://sntran.com" } = new URL(url);
 
+  const date = new Date().toISOString();
+
   const feed = {
     title: "Trần Nguyễn Sơn's Space",
     description: "Personal space for Trần Nguyễn Sơn",
     href: origin,
-    lastModified: new Date().toISOString(),
+    lastModified: date,
     author: {
       name: "Trần Nguyễn Sơn",
       email: "contact@sntran.com",
@@ -99,25 +132,29 @@ function atom(request) {
         title: "About",
         description: "About Me",
         href: "README.md",
-        lastModified: new Date().toISOString(),
+        lastModified: date,
+        content: "",
       },
       {
         title: "Projects",
         description: "All projects contributed by me",
         href: "Projects/",
-        lastModified: new Date().toISOString(),
+        lastModified: date,
+        content: "",
       },
       {
         title: "Project A",
         description: "Project A summary",
         href: "Projects/Project-A/",
-        lastModified: new Date().toISOString(),
+        lastModified: date,
+        content: "",
       },
       {
         title: "Changelog",
         description: "Project A changelog",
         href: "Projects/Project-A/CHANGELOG.md",
-        lastModified: new Date().toISOString(),
+        lastModified: date,
+        content: "",
       },
     ],
   }
@@ -128,7 +165,7 @@ function atom(request) {
 
   return new Response(
     `<?xml version="1.0" encoding="UTF-8" ?>
-    <?xml-stylesheet type="text/xsl" href="index.xsl" ?>
+    <?xml-stylesheet type="text/xsl" href="_layouts/index.xsl" ?>
     <?xslt-param name="html" value="index.html"?>
     <feed xmlns="http://www.w3.org/2005/Atom">
       <id>${origin}</id>
@@ -142,14 +179,15 @@ function atom(request) {
       </author>
 
       ${feed.entries.map((entry) => `<entry>
-        <id>${entry.href}</id>
+        <id>${origin}${entry.href}</id>
         <title>${entry.title}</title>
         <summary>${entry.description}</summary>
         <link href="${origin}/${entry.href}" rel="self" />
-        <link rel="alternate" type="text/html" href="${origin}/${entry.href}"/>
         <published>${entry.lastModified}</published>
         <updated>${entry.lastModified}</updated>
+        <content type="html">${entry.content}</content>
       </entry>`).join("")}
+
     </feed>`,
     {
       headers: {
@@ -160,14 +198,10 @@ function atom(request) {
 }
 
 const routes = {
-  "GET@/": home,
+  "GET@/": page,
+  "GET@/:path*{/}?": page,
   "GET@/favicon.ico": () => new Response(),
-  "GET@/atom.xml": atom,
-  "GET@/index.(xsl|html)": (request, env) => {
-    const url = new URL(request.url);
-    url.pathname = `/static${url.pathname}`;
-    return env.ASSETS.fetch(new Request(url));
-  },
+  "GET@/feed.xml": atom,
   "GET@/codicon.svg": () => {
     return fetch("https://unpkg.com/@vscode/codicons/dist/codicon.svg");
   },
