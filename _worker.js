@@ -165,7 +165,7 @@ function atom(request) {
 
   return new Response(
     `<?xml version="1.0" encoding="UTF-8" ?>
-    <?xml-stylesheet type="text/xsl" href="_layouts/index.xsl" ?>
+    <?xml-stylesheet type="text/xsl" href="_layouts/feed.xsl" ?>
     <?xslt-param name="html" value="index.html"?>
     <feed xmlns="http://www.w3.org/2005/Atom">
       <id>${origin}</id>
