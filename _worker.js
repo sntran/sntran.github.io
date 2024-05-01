@@ -4,9 +4,7 @@ async function page(request, env) {
   const url = new URL(request.url);
   let pathname = url.pathname; // The original pathname.
   if (pathname === "/") {
-    pathname = "/404.html";
-  } else if (pathname.endsWith("/")) {
-    pathname += "README.md";
+    pathname = "";
   }
 
   let response = atom(new Request(url, {
@@ -25,10 +23,7 @@ async function page(request, env) {
     children: [],
   }
 
-  let page = {
-    title: "Welcome",
-    children: [],
-  }
+  let page
 
   const linkMap = {};
 
@@ -92,17 +87,46 @@ async function page(request, env) {
     },
   });
 
+  rewriter.on("#tabs li a", {
+    element(element) {
+      let href = element.getAttribute("href");
+      // Homepage won't have href
+      if (href === "/") {
+        href = "";
+      }
+      // Interpolates variable if any.
+      if (href.includes("{{ page.href }}")) {
+        href = href.replace("{{ page.href }}", page?.href || "");
+        href = "/" + href;
+        element.setAttribute("href", href);
+      }
+
+      if (href === pathname) {
+        element.setAttribute("aria-current", "page");
+      }
+    },
+  });
+
   rewriter.onDocument({
     async text(chunk) {
       let text = chunk.text;
       if (text.includes("{{ page.title }}")) {
-        text = text.replace("{{ page.title }}", page.title);
+        text = text.replace("{{ page.title }}", page?.title || "");
         chunk.replace(text, contentOptions);;
       }
       // Injects the content of the requested file.
       if (text.includes("{{ content }}")) {
-        const response = await env.ASSETS.fetch(new URL(pathname, url));
-        text = text.replace("{{ content }}", await response.text());
+        let content = "";
+        if (page) {
+          const file = new URL(pathname, url);
+          if (pathname.endsWith("/")) {
+            file.pathname += "README.md";
+          }
+          const response = await env.ASSETS.fetch(file);
+          content = await response.text();
+        }
+
+        text = text.replace("{{ content }}", content);
         chunk.replace(text, contentOptions);
       }
     }
@@ -129,7 +153,7 @@ function atom(request) {
     },
     entries: [
       {
-        title: "About",
+        title: "about",
         description: "About Me",
         href: "README.md",
         lastModified: date,
@@ -138,21 +162,21 @@ function atom(request) {
       {
         title: "Projects",
         description: "All projects contributed by me",
-        href: "Projects/",
+        href: "projects/",
         lastModified: date,
         content: "",
       },
       {
-        title: "Project A",
-        description: "Project A summary",
-        href: "Projects/Project-A/",
+        title: "DenoLCR",
+        description: "Deno port of Rclone",
+        href: "projects/denolcr/",
         lastModified: date,
         content: "",
       },
       {
         title: "Changelog",
-        description: "Project A changelog",
-        href: "Projects/Project-A/CHANGELOG.md",
+        description: "DenoLCR changelog",
+        href: "projects/denolcr/CHANGELOG.md",
         lastModified: date,
         content: "",
       },
