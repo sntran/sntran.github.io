@@ -1,4 +1,5 @@
 name: Trần Nguyễn Sơn's Space
+encoding: "utf-8"
 
 defaults:
   -
@@ -6,4 +7,4 @@ defaults:
       path: "" # an empty string here means all files in the project
       type: "pages"
     values:
-      layout: "index"
+      layout: "index.html"
