@@ -1,4 +1,7 @@
+import * as markdown from "markdown-wasm";
 import { router } from "./lib/router.js";
+
+await markdown.ready;
 
 async function page(request, env) {
   const url = new URL(request.url);
@@ -62,7 +65,7 @@ async function page(request, env) {
       <details ${ children[0].parent ? "" : "open"}>
         <summary>${link.title}</summary>
 
-        <ul class="pl-4">
+        <ul>
           ${children
             .sort((a, b) => a.children.length > b.children.length ? -1 : 1)
             .map(renderLink)
@@ -123,7 +126,7 @@ async function page(request, env) {
             file.pathname += "README.md";
           }
           const response = await env.ASSETS.fetch(file);
-          content = await response.text();
+          content = markdown.parse(await response.text());
         }
 
         text = text.replace("{{ content }}", content);

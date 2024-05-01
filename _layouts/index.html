@@ -18,13 +18,51 @@
         @apply text-5xl;
       }
 
+      :where(.content) h1 {
+        @apply font-bold;
+        @apply text-3xl;
+        @apply mb-4 pb-2;
+        @apply border-b-2 border-b-[--color-border];
+      }
+
       h2 {
         @apply mb-1;
         @apply text-2xl;
       }
 
+      :where(.content) h2 {
+        @apply font-bold;
+        @apply my-4 pb-2;
+        @apply border-b-2 border-b-[--color-border];
+      }
+
+      h3 {
+        @apply text-xl;
+      }
+
+      :where(.content) h3 {
+        @apply font-bold;
+        @apply my-2;
+      }
+
       .subtitle {
         @apply text-3xl;
+      }
+
+      ul, ol {
+        @apply pl-4;
+      }
+
+      :where(.content) ul, :where(.content) ol {
+        @apply my-4;
+      }
+
+      :where(.content) ul {
+        @apply list-disc;
+      }
+
+      :where(.content) ol {
+        @apply list-decimal;
       }
     }
 
@@ -125,7 +163,7 @@
     >
       <div class="py-1 uppercase">Explorer</div>
 
-      <ul>
+      <ul class="p-0">
         {% for doc in site.pages %}
 
         {% endfor %}
@@ -169,7 +207,7 @@
         bg-canvas
       "
     >
-      <ul>
+      <ul class="p-0">
         <li>Welcome</li>
       </ul>
     </nav>
@@ -182,6 +220,7 @@
         sticky top-0 z-10
         -order-1
         flex
+        p-0
         bg-canvas
         border-b border-b-[--color-border]
       "
@@ -219,19 +258,21 @@
       class="
         row-start-3 col-start-1
         grid gap-x-32 gap-y-8 place-content-center justify-center
-        p-2
+        p-4
         bg-canvas
         border-t border-t-[--color-border]
+
+        content
       "
     >
       <header class="md:col-span-2">
-        <h1>Trần Nguyễn Sơn</h1>
+        <h1 class="text-5xl m-0 p-0 border-b-0">Trần Nguyễn Sơn</h1>
         <p class="subtitle">Husband, Dad, Code Hobbyist</p>
       </header>
 
       <div>
-        <h2>Start</h2>
-        <ul class="flex flex-col gap-1">
+        <h2 class="m-0 p-0 border-b-0">Start</h2>
+        <ul class="flex flex-col gap-1 p-0 list-none">
           <li>
             <a href="/README.md" class="text-[--color-blue]">About Me</a>
           </li>
@@ -243,14 +284,14 @@
           </li>
         </ul>
 
-        <h2 class="mt-4">Recent</h2>
+        <h2 class="m-0 mt-4 p-0 border-b-0">Recent</h2>
         <p>You have not viewed anything recently.</p>
       </div>
 
       <div>
-        <h2>Journal Entries</h2>
+        <h2 class="m-0 p-0 border-b-0">Journal Entries</h2>
 
-        <ul class="flex flex-col gap-4 text-lg">
+        <ul class="flex flex-col gap-4 text-lg m-0 p-0 list-none">
           <li>
             <a href="/Blog/1" class="block px-2 py-1 rounded border border-[--color-border]">
               <span class="">Start Documenting My Life</span>
@@ -275,9 +316,11 @@
     <article
       class="
         row-start-3 col-start-1
-        p-2
+        p-4
         bg-canvas
         border-t border-t-[--color-border]
+
+        content
 
         empty:hidden
       "
