@@ -1,15 +1,21 @@
+<input
+  type="checkbox" name="sidebar" checked=""
+  id="sidebar-right"
+  class="hidden peer"
+/>
+
 <nav
-  id="explorer" popover=""
+  id="explorer"
   role="navigation" aria-label="Primary"
   class="
     flex-1
-    w-auto h-auto
-    bottom-6
-    my-0 ml-12
+    w-[250px]
     px-4
 
-    md:block md:relative md:mx-0
-    md:[&:popover-open]:block
+    peer-checked:hidden
+
+    md:hidden
+    md:peer-checked:block
   "
 >
   <div class="py-1 uppercase">Explorer</div>
