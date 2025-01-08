@@ -206,6 +206,20 @@ function atom(request) {
         lastModified: date,
         content: "",
       },
+      {
+        title: "X-Blog",
+        description: "Cross-runtime Blog Engine",
+        href: "projects/x-blog/",
+        lastModified: date,
+        content: "",
+      },
+      {
+        title: "Changelog",
+        description: "X-Blog changelog",
+        href: "projects/x-blog/CHANGELOG.md",
+        lastModified: date,
+        content: "",
+      },
     ],
   }
 
